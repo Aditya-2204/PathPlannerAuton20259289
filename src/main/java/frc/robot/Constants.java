@@ -13,6 +13,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.robot.subsystems.SwerveModuleOld;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -40,6 +41,42 @@ public final class Constants {
   }
 
   public static final class SwerveConstants{
+
+    public static final SwerveModuleOld leftFrontSwerveModule = new SwerveModuleOld(
+      SwerveConstants.LEFT_FRONT_DRIVE_ID, 
+      SwerveConstants.LEFT_FRONT_TURN_ID, 
+      false, 
+      true, 
+      SwerveConstants.LEFT_FRONT_CANCODER_ID, 
+      SwerveConstants.LEFT_FRONT_OFFSET, 
+      false);
+
+    public static final SwerveModuleOld rightFrontSwerveModule = new SwerveModuleOld(
+      SwerveConstants.RIGHT_FRONT_DRIVE_ID, 
+      SwerveConstants.RIGHT_FRONT_TURN_ID, 
+      true, 
+      true, 
+      SwerveConstants.RIGHT_FRONT_CANCODER_ID, 
+      SwerveConstants.RIGHT_FRONT_OFFSET, 
+      true);
+
+    public static final SwerveModuleOld leftBackSwerveModule = new SwerveModuleOld(
+      SwerveConstants.LEFT_BACK_DRIVE_ID, 
+      SwerveConstants.LEFT_BACK_TURN_ID, 
+      false, 
+      true, 
+      SwerveConstants.LEFT_BACK_CANCODER_ID, 
+      SwerveConstants.LEFT_BACK_OFFSET, 
+      false);
+
+    public static final SwerveModuleOld rightBackSwerveModule = new SwerveModuleOld(
+      SwerveConstants.RIGHT_BACK_DRIVE_ID, 
+      SwerveConstants.RIGHT_BACK_TURN_ID, 
+      false, 
+      true, 
+      SwerveConstants.RIGHT_BACK_CANCODER_ID, 
+      SwerveConstants.RIGHT_BACK_OFFSET, 
+      false);
     //Drivetrain motor/encoder IDs
 
     public static final PIDConstants translationConstants = new PIDConstants(5.0, 0.0, 0.0);

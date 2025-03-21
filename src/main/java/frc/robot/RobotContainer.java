@@ -24,7 +24,7 @@ public class RobotContainer {
   private static Hang hang = new Hang();
   private static Arm arm = new Arm();
   private static Roller roller = new Roller();
-  private final DrivetrainOld drivetrain = DrivetrainOld.getInstance();
+  private final DriveSubsystem drivetrain = DriveSubsystem.getInstance();
   private final SwerveSubsystem swervePathPlanner = new SwerveSubsystem();
 
   // Initializing commands to put up as choices
