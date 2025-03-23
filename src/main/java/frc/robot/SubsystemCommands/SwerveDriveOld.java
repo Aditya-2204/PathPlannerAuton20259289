@@ -8,10 +8,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.commands.CommandConstants;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.DrivetrainOld;
 
 public class SwerveDriveOld extends Command {
-  private DriveSubsystem drivetrain = DriveSubsystem.getInstance();
+  private DrivetrainOld drivetrain = DrivetrainOld.getInstance();
   private boolean fieldOriented = true;
 
   /** Creates a new SwerveDrive. */

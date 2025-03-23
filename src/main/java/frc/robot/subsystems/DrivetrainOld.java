@@ -2,6 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+//I have added SwerveSubsystem features to the DrivetrainOld class for a unified drivetrain subsystem.
+
+
+
+
 package frc.robot.subsystems;
 
 import java.text.DecimalFormat;
@@ -20,7 +25,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 public class DrivetrainOld extends SubsystemBase {
   private SwerveModuleOld leftFront;
@@ -31,6 +40,7 @@ public class DrivetrainOld extends SubsystemBase {
   private SlewRateLimiter frontLimiter;
   private SlewRateLimiter sideLimiter;
   private SlewRateLimiter turnLimiter;
+  private final SwerveDriveKinematics kinematics;
 
   private Pigeon2 gyro;
 
@@ -42,8 +52,17 @@ public class DrivetrainOld extends SubsystemBase {
     return drivetrain;
   }
 
+
   /** Creates a new SwerveDrivetrain. */
   public DrivetrainOld() {
+    kinematics = new SwerveDriveKinematics(
+
+    Constants.SwerveConstants.flModuleOffset,
+    Constants.SwerveConstants.frModuleOffset,
+    Constants.SwerveConstants.blModuleOffset,
+    Constants.SwerveConstants.brModuleOffset
+
+  );
     new Thread(() -> {
       try{
         Thread.sleep(1000);
@@ -52,41 +71,10 @@ public class DrivetrainOld extends SubsystemBase {
       catch(Exception e){}
     }).start();
 
-    leftFront = new SwerveModuleOld(
-      SwerveConstants.LEFT_FRONT_DRIVE_ID, 
-      SwerveConstants.LEFT_FRONT_TURN_ID, 
-      false, 
-      true, 
-      SwerveConstants.LEFT_FRONT_CANCODER_ID, 
-      SwerveConstants.LEFT_FRONT_OFFSET, 
-      false);
-
-    rightFront = new SwerveModuleOld(
-      SwerveConstants.RIGHT_FRONT_DRIVE_ID, 
-      SwerveConstants.RIGHT_FRONT_TURN_ID, 
-      true, 
-      true, 
-      SwerveConstants.RIGHT_FRONT_CANCODER_ID, 
-      SwerveConstants.RIGHT_FRONT_OFFSET, 
-      true);
-
-    leftBack = new SwerveModuleOld(
-      SwerveConstants.LEFT_BACK_DRIVE_ID, 
-      SwerveConstants.LEFT_BACK_TURN_ID, 
-      false, 
-      true, 
-      SwerveConstants.LEFT_BACK_CANCODER_ID, 
-      SwerveConstants.LEFT_BACK_OFFSET, 
-      false);
-    
-    rightBack = new SwerveModuleOld(
-      SwerveConstants.RIGHT_BACK_DRIVE_ID, 
-      SwerveConstants.RIGHT_BACK_TURN_ID, 
-      false, 
-      true, 
-      SwerveConstants.RIGHT_BACK_CANCODER_ID, 
-      SwerveConstants.RIGHT_BACK_OFFSET, 
-      false);
+    leftFront = Constants.SwerveConstants.leftFrontSwerveModule;
+    rightFront = Constants.SwerveConstants.rightFrontSwerveModule;
+    leftBack = Constants.SwerveConstants.leftBackSwerveModule;
+    rightBack = Constants.SwerveConstants.rightBackSwerveModule;
 
     frontLimiter = new SlewRateLimiter(SwerveConstants.TELE_DRIVE_MAX_ACCELERATION);
     sideLimiter = new SlewRateLimiter(SwerveConstants.TELE_DRIVE_MAX_ACCELERATION);
@@ -100,14 +88,35 @@ public class DrivetrainOld extends SubsystemBase {
       getModulePositions(),
       new Pose2d());
 
-    // AutoBuilder.configureHolonomic(
-    //   this::getPose,
-    //   this::resetPose,
-    //   this::getRobotRelativeSpeeds,
-    //   this::driveRobotRelative,
-    //   SwerveConstants.AUTO_CONFIG,
-    //   () -> isRedAlliance(),
-    //   this);
+    /*AutoBuilder.configureHolonomic(
+       this::getPose,
+       this::resetPose,
+       this::getRobotRelativeSpeeds,
+       this::driveRobotRelative,
+       SwerveConstants.AUTO_CONFIG,
+       () -> isRedAlliance(),
+       this); 
+                                 This is deprecated*/ 
+
+    //This is the new way to configure the path planner
+    try {
+      RobotConfig config = RobotConfig.fromGUISettings();
+      AutoBuilder.configure(
+          this::getPose,
+          this::resetPose,
+          this::getSpeeds,
+          this::driveRobotRelative,
+          new PPHolonomicDriveController(
+              Constants.SwerveConstants.translationConstants,
+              Constants.SwerveConstants.rotationConstants
+          ),
+          config,
+          () -> DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Red,
+          this
+      );
+  } catch (Exception e) {
+      DriverStation.reportError("Failed to load PathPlanner config", e.getStackTrace());
+  }
   }
 
   @Override
@@ -115,7 +124,7 @@ public class DrivetrainOld extends SubsystemBase {
     poseEstimator.update(getHeadingRotation2d(), getModulePositions());
 
     SmartDashboard.putNumber("Robot Angle", getHeading());
-    SmartDashboard.putString("Angular Speed", new DecimalFormat("#.00").format((-gyro.getRate() / 180)) + "pi rad/s");
+    SmartDashboard.putString("Angular Speed", new DecimalFormat("#.00").format((-gyro.getAngularVelocityZWorld().getValueAsDouble() / 180)) + "pi rad/s");
   }
 
   public void swerveDrive(double frontSpeed, double sideSpeed, double turnSpeed, 
@@ -191,7 +200,7 @@ public class DrivetrainOld extends SubsystemBase {
   }
 
   public double getHeading(){
-    return Math.IEEEremainder(-gyro.getAngle(), 360); //clamp heading between -180 and 180
+    return Math.IEEEremainder(-gyro.getYaw().getValueAsDouble(), 360); //clamp heading between -180 and 180
   }
 
   public Rotation2d getHeadingRotation2d(){
@@ -238,4 +247,9 @@ public class DrivetrainOld extends SubsystemBase {
     }
     return false;
   }
+
+  public ChassisSpeeds getSpeeds() {
+    return kinematics.toChassisSpeeds(getModuleStates());
+}
+  
 }

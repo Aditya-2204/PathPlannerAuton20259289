@@ -7,7 +7,7 @@ import frc.robot.SubsystemCommands.RollerCommands;
 import frc.robot.SubsystemCommands.SwerveDriveCommands;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Roller;
-import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.DrivetrainOld;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -16,7 +16,7 @@ public class MiddleStartAutonwithPPLib extends SequentialCommandGroup{
 
     final double shooterSpeed = 1;
 
-    public MiddleStartAutonwithPPLib (Roller roller, Arm arm, SwerveSubsystem swerveSubsystem)
+    public MiddleStartAutonwithPPLib (Roller roller, Arm arm, DrivetrainOld swerveSubsystem)
     {
         addCommands(
             new PathPlannerAuto("MiddleStartAuton"), //Left Start Auton

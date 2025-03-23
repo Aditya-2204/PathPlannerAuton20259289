@@ -8,7 +8,6 @@ import frc.robot.subsystems.*;
 import frc.robot.AutonCommands.*;
 import frc.robot.commands.*;
 import frc.robot.SubsystemCommands.*;
-import frc.robot.subsystems.SwerveSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,8 +23,8 @@ public class RobotContainer {
   private static Hang hang = new Hang();
   private static Arm arm = new Arm();
   private static Roller roller = new Roller();
-  private final DriveSubsystem drivetrain = DriveSubsystem.getInstance();
-  private final SwerveSubsystem swervePathPlanner = new SwerveSubsystem();
+  private final DrivetrainOld drivetrain = DrivetrainOld.getInstance();
+  private final DrivetrainOld swervePathPlanner = new DrivetrainOld();
 
   // Initializing commands to put up as choices
   private final Command leftCommand = new LeftStartAuto(roller, arm);
