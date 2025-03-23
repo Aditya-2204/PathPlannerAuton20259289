@@ -12,7 +12,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class SwerveDriveOld extends Command {
   private DriveSubsystem drivetrain = DriveSubsystem.getInstance();
-  private boolean fieldOriented = false;
+  private boolean fieldOriented = true;
 
   /** Creates a new SwerveDrive. */
   public SwerveDriveOld() {
@@ -28,14 +28,26 @@ public class SwerveDriveOld extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RobotContainer.driverController.getRawButton(CommandConstants.ButtonLeftStick)) {
-      fieldOriented = !fieldOriented;
-    }
+    double frontSpeedInput = RobotContainer.driverController.getRawAxis(CommandConstants.AxisLeftStickY);
+    double sideSpeedInput = RobotContainer.driverController.getRawAxis(CommandConstants.AxisLeftStickX);
+    double turnSpeedInput = RobotContainer.driverController.getRawAxis(CommandConstants.AxisRightStickX);
+
+    //deadband
+    frontSpeedInput = Math.abs(frontSpeedInput) < 0.1 ? 0 : frontSpeedInput;
+    sideSpeedInput = Math.abs(sideSpeedInput) < 0.1 ? 0 : sideSpeedInput;
+    turnSpeedInput = Math.abs(turnSpeedInput) < 0.1 ? 0 : turnSpeedInput;
+
+    //Square scaling
+    double frontSpeedOutput = Math.copySign(frontSpeedInput * frontSpeedInput, frontSpeedInput);
+    double sideSpeedOutput = Math.copySign(sideSpeedInput * sideSpeedInput, sideSpeedInput);
+    double turnSpeedOutput = turnSpeedInput;
+
+
     drivetrain.swerveDrive(
-        RobotContainer.driverController.getRawAxis(CommandConstants.AxisLeftStickY),
-        RobotContainer.driverController.getRawAxis(CommandConstants.AxisLeftStickX),
-        RobotContainer.driverController.getRawAxis(CommandConstants.AxisRightStickX),
-        !fieldOriented,
+        frontSpeedOutput,
+        sideSpeedOutput,
+        turnSpeedOutput,
+        fieldOriented,
         new Translation2d(),
         true);
   }
