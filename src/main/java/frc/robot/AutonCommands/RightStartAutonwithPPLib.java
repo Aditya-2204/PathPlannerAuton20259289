@@ -19,10 +19,7 @@ public class RightStartAutonwithPPLib extends SequentialCommandGroup{
     public RightStartAutonwithPPLib (Roller roller, Arm arm, DrivetrainOld swerveSubsystem)
     {
         addCommands(
-            new PathPlannerAuto("RightStartAuton"), //Left Start Auton
-            new ArmCommands(-.60, arm).withTimeout(.25),
-            new RollerCommands(-.3, roller).withTimeout(3),
-            new RollerCommands(-0.2, roller).withTimeout(5)
+            new PathPlannerAuto("RightStartAuton") //Right Start Auton
         );
         // shoot, go straight, turn right, then go straight
     }

@@ -121,6 +121,7 @@ public class DrivetrainOld extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("Red Alliance", isRedAlliance());
     poseEstimator.update(getHeadingRotation2d(), getModulePositions());
 
     SmartDashboard.putNumber("Robot Angle", getHeading());

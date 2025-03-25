@@ -1,0 +1,49 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00000001426bc1e0, pid=3253, tid=52739
+#
+# JRE version: OpenJDK Runtime Environment Temurin-17.0.12+7 (17.0.12+7) (build 17.0.12+7)
+# Java VM: OpenJDK 64-Bit Server VM Temurin-17.0.12+7 (17.0.12+7, mixed mode, tiered, compressed oops, compressed class ptrs, g1 gc, bsd-aarch64)
+# Problematic frame:
+# C  [libCTRE_PhoenixTools_Sim.dylib+0x141e0]
+#
+# No core dump will be written. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please visit:
+#   https://github.com/adoptium/adoptium-support/issues
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -agentlib:jdwp=transport=dt_socket,server=n,suspend=y,address=localhost:49522 -Djava.library.path=/Users/adityachakraborty/Desktop/Code/Java/Robotics/2025/PathPlannerAuton20259289/build/jni/release -XX:+ShowCodeDetailsInExceptionMessages frc.robot.Main
+
+Host: "Mac14,7" arm64, 8 cores, 16G, Darwin 24.3.0, macOS 15.3.2 (24D81)
+Time: Mon Mar 24 22:31:21 2025 CDT elapsed time: 72.340852 seconds (0d 0h 1m 12s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00000001378d6800):  JavaThread "robot main" daemon [_thread_in_native, id=52739, stack(0x0000000171d1c000,0x0000000171f1f000)]
+
+Stack: [0x0000000171d1c000,0x0000000171f1f000],  sp=0x0000000171f1e040,  free space=2056k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [libCTRE_PhoenixTools_Sim.dylib+0x141e0]
+C  [libCTRE_PhoenixTools_Sim.dylib+0x19f854]
+C  [libCTRE_PhoenixTools_Sim.dylib+0x243010]
+j  com.ctre.phoenix6.jni.ErrorReportingJNI.reportStatusCode(ILjava/lang/String;)V+0
+j  com.ctre.phoenix6.StatusSignal.updateValue(ZDZ)V+166
+j  com.ctre.phoenix6.StatusSignal.refresh(Z)Lcom/ctre/phoenix6/StatusSignal;+4
+J 1630 c2 frc.robot.subsystems.DrivetrainOld.periodic()V (78 bytes) @ 0x0000000116e8d4e4 [0x0000000116e8d280+0x0000000000000264]
+J 1565 c2 edu.wpi.first.wpilibj2.command.CommandScheduler.run()V (603 bytes) @ 0x0000000116e4a464 [0x0000000116e49d80+0x00000000000006e4]
+J 1428 c1 frc.robot.Robot.robotPeriodic()V (7 bytes) @ 0x000000010f5cdd44 [0x000000010f5cdb00+0x0000000000000244]
+J 1361 c1 edu.wpi.first.wpilibj.IterativeRobotBase.loopFunc()V (552 bytes) @ 0x000000010f595d80 [0x000000010f593b80+0x0000000000002200]
+J 1360 c1 edu.wpi.first.wpilibj.TimedRobot$$Lambda$10+0x0000000800095cd8.run()V (8 bytes) @ 0x000000010f592d74 [0x000000010f592c40+0x0000000000000134]
+j  edu.wpi.first.wpilibj.TimedRobot.startCompetition()V+75
+j  edu.wpi.first.wpilibj.RobotBase.runRobot(Ljava/util/function/Supplier;)V+265
+j  edu.wpi.first.wpilibj.RobotBase.lambda$startRobot$1(Ljava/util/function/Supplier;)V+1
+j  edu.wpi.first.wpilibj.RobotBase$$Lambda$2+0x0000000800089b58.run()V+4
+j  java.lang.Thread.run()V+11 java.base@17.0.12
+v  ~StubRoutines::call_stub
+V  [libjvm.dylib+0x45e0f4]

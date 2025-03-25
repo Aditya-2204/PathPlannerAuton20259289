@@ -24,7 +24,6 @@ public class RobotContainer {
   private static Arm arm = new Arm();
   private static Roller roller = new Roller();
   private final DrivetrainOld drivetrain = DrivetrainOld.getInstance();
-  private final DrivetrainOld swervePathPlanner = new DrivetrainOld();
 
   // Initializing commands to put up as choices
   private final Command leftCommand = new LeftStartAuto(roller, arm);
@@ -33,9 +32,9 @@ public class RobotContainer {
   private final Command nonSpeakerCommand = new NonSpeakerStartAuto();
 
   // Autons for PathPlanner
-  private final Command leftPathPlannerCommand = new LeftStartAutonwithPPLib(roller, arm, swervePathPlanner);
-  private final Command middlePathPlannerCommand = new MiddleStartAutonwithPPLib(roller, arm, swervePathPlanner);
-  private final Command rightPathPlannerCommand = new RightStartAutonwithPPLib(roller, arm, swervePathPlanner);
+  private final Command leftPathPlannerCommand = new LeftStartAutonwithPPLib(roller, arm, drivetrain);
+  private final Command middlePathPlannerCommand = new MiddleStartAutonwithPPLib(roller, arm, drivetrain);
+  private final Command rightPathPlannerCommand = new RightStartAutonwithPPLib(roller, arm, drivetrain);
 
   SendableChooser<Command> m_chooser;
 
