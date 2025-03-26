@@ -1,7 +1,6 @@
 package frc.robot.AutonCommands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.SubsystemCommands.ArmCommands;
 import frc.robot.SubsystemCommands.RollerCommands;
 import frc.robot.SubsystemCommands.SwerveDriveCommands;
 import frc.robot.subsystems.Arm;

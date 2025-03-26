@@ -41,7 +41,6 @@ public class TimedCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        // TODO Auto-generated method stub
         return _command.isFinished();
     }
 

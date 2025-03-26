@@ -32,11 +32,6 @@ public class SwerveDriveOld extends Command {
     double sideSpeedInput = RobotContainer.driverController.getRawAxis(CommandConstants.AxisLeftStickX);
     double turnSpeedInput = RobotContainer.driverController.getRawAxis(CommandConstants.AxisRightStickX);
 
-    //deadband
-    frontSpeedInput = Math.abs(frontSpeedInput) < 0.1 ? 0 : frontSpeedInput;
-    sideSpeedInput = Math.abs(sideSpeedInput) < 0.1 ? 0 : sideSpeedInput;
-    turnSpeedInput = Math.abs(turnSpeedInput) < 0.1 ? 0 : turnSpeedInput;
-
     //Square scaling
     double frontSpeedOutput = Math.copySign(frontSpeedInput * frontSpeedInput, frontSpeedInput);
     double sideSpeedOutput = Math.copySign(sideSpeedInput * sideSpeedInput, sideSpeedInput);
